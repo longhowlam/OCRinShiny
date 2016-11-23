@@ -39,12 +39,17 @@ shinyUI(fluidPage(
           htmlOutput("intro")
         ),
         tabPanel(
-          "Image to OCR",
-          imageOutput("plaatje")
-        ),
-        tabPanel(
-          "Extracted text",
-          verbatimTextOutput("OCRtext")
+          "Image & extracted text",
+          fluidRow(
+            column(
+              width=7,
+              imageOutput("plaatje")
+            ),
+            column(
+              width=5,
+              verbatimTextOutput("OCRtext")
+            )
+          )
         ),
         tabPanel(
           "Extracted text as sentences",
