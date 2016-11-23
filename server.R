@@ -10,10 +10,14 @@ library(shiny)
 shinyServer(function(input, output, session) {
   
   extractedText <- reactive({
+    
     progress <- Progress$new(session, min=1, max=15)
     on.exit(progress$close())
     
-    progress$set(message = 'OCR in progress', detail = 'This may take 5-10 sec...')
+    progress$set(
+      message = 'OCR in progress', 
+      detail = 'This may take 5-10 sec...'
+    )
     
     inFile = input$file1
     
@@ -31,10 +35,10 @@ shinyServer(function(input, output, session) {
   output$intro <- renderUI({
     list(
       img(SRC="ocrplaatje.jpg"),
-      h4("This shiny app uses the tesseract package to perform OCR on an uploaded image."), 
+      h4("This shiny app uses the tesseract R package to perform OCR on an uploaded image."), 
       h4("The extracted text is then used to form a wordcloud image, (English) stopwords can be removed"),
-      h4("If no image is selected a default ocr test image is used"),
-      h3("Cheers, Longhow")
+      h4("If no image is selected a default ocr test image is used. The R source can be found on my ", a("github", href="https://github.com/longhowlam/OCRinShiny")),
+      h4("Cheers, Longhow")
     )
     
   })
@@ -68,6 +72,22 @@ shinyServer(function(input, output, session) {
       
     cat(extractedText())
   })
+  
+  output$sentences = renderDataTable({
+    
+    text = extractedText()
+    tmp = tokenize(text, what = "sentence")
+    DT::datatable(  
+      data.frame(
+        sentence = 1:length(tmp[[1]]),
+        text = tmp[[1]]
+      ),
+      rownames = FALSE
+      
+    )
+    
+  })
+  
   
   output$cloud = renderPlot({
     

@@ -12,12 +12,13 @@ library(tesseract)
 library(wordcloud)
 library(tm)
 library(RColorBrewer)
-
+library(quanteda)
+library(DT)
 
 shinyUI(fluidPage(
   
   # Application title
-  titlePanel("OCR an image with the tesseract package"),
+  titlePanel("OCR an image with the tesseract R package"),
   
   sidebarLayout(
     sidebarPanel(width = 3,
@@ -44,6 +45,10 @@ shinyUI(fluidPage(
         tabPanel(
           "Extracted text",
           verbatimTextOutput("OCRtext")
+        ),
+        tabPanel(
+          "Extracted text as sentences",
+          DT::dataTableOutput("sentences")
         ),
         tabPanel(
           "Wordcloud",
