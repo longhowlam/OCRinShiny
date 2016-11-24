@@ -5,6 +5,15 @@
 # http://shiny.rstudio.com
 #
 
+#checking that the dependencies exist
+req.packages=c("shiny","jpeg","tesseract","wordcloud","tm","RColorBrewer","quanteda","DT")
+if(any(! req.packages  %in% installed.packages()))
+  stop(
+    paste0("Not all dependent packages are installed on your computer.\n Please install: ",
+           paste(req.packages[!req.packages %in% installed.packages()],collapse=","),
+           ". See '?install.packages' for more information on how to install R packages.")
+  )
+
 library(shiny)
 
 library(jpeg)
